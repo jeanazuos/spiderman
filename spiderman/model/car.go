@@ -5,7 +5,7 @@ type Car struct {
 	Type     string
 	Price    int64
 	Year     string
-	Mileage  string
+	Mileage  int64
 	Location string
 	Company  string
 }

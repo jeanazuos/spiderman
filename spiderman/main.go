@@ -6,11 +6,11 @@ import (
 	"encoding/json"
 	"fmt"
 	"log"
-	"strconv"
 	"strings"
 
 	"github.com/chromedp/chromedp"
 	"github.com/jeanazuos/buscakr_v2/spiderman/model"
+	util "github.com/jeanazuos/buscakr_v2/spiderman/utils"
 )
 
 func main() {
@@ -44,14 +44,15 @@ func main() {
 
 		// Verifica se o len é 6, pois webmotors retorna esta qtd de valores uteis
 		if len(carAttributes) == 6 {
-			price := strings.TrimSpace(carAttributes[2])
-			price = strings.ReplaceAll(price, ".", "")
-			priceInt, err := strconv.ParseInt(price, 10, 64)
+			priceInt, err := util.WebmmotorsPriceConverter(carAttributes[2])
 			if err != nil {
-				log.Println("Nao foi possivel converter price para inteiro")
+				log.Println(err)
 			}
-
-			x := model.Car{carAttributes[0], carAttributes[1], priceInt, carAttributes[3], carAttributes[4], carAttributes[5], "Webmotors"}
+			mileageInt, err := util.WebmmotorsMileageConverter(carAttributes[4])
+			if err != nil {
+				log.Println(err)
+			}
+			x := model.Car{carAttributes[0], carAttributes[1], priceInt, carAttributes[3], mileageInt, carAttributes[5], "Webmotors"}
 			payloadCar = append(payloadCar, x)
 		}
 
