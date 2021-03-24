@@ -51,6 +51,8 @@ func main() {
 			log.Println(err)
 		}
 
+		//preciso criar uma coluna indicando que os dados provem do webmotors para fazermos filtros
+		//posteriormente
 		fmt.Println("result=> ", string(result))
 
 	}
