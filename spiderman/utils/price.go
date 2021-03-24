@@ -1,17 +1,17 @@
 package utils
 
 import (
-	"log"
+	"errors"
 	"strconv"
 	"strings"
 )
 
-func webmmotorsPriceConverter(price string) int64 {
+func WebmmotorsPriceConverter(price string) (int64, error) {
 	price = strings.TrimSpace(price)
 	price = strings.ReplaceAll(price, ".", "")
 	priceInt, err := strconv.ParseInt(price, 10, 64)
 	if err != nil {
-		log.Println("Nao foi possivel converter price para inteiro")
+		return 0, errors.New("Nao foi possivel converter price para inteiro")
 	}
-	return priceInt
+	return priceInt, nil
 }
