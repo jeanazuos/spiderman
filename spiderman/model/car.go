@@ -1,8 +1,8 @@
-package models
+package model
 
 type Car struct {
 	Name     string
-	Brand    string
+	Type     string
 	Price    string
 	Year     string
 	Mileage  string
