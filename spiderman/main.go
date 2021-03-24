@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"log"
+	"strconv"
 	"strings"
 
 	"github.com/chromedp/chromedp"
@@ -28,7 +29,8 @@ func main() {
 	}
 
 	lines := strings.TrimSpace(res)
-	lines2 := strings.ReplaceAll(lines, "\n", ",")
+	lines1 := strings.ReplaceAll(lines, "R$", "")
+	lines2 := strings.ReplaceAll(lines1, "\n", ",")
 	lines3 := strings.ReplaceAll(lines2, ",,", ";")
 	carAdvertising := strings.Split(lines3, ";")
 
@@ -42,7 +44,14 @@ func main() {
 
 		// Verifica se o len é 6, pois webmotors retorna esta qtd de valores uteis
 		if len(carAttributes) == 6 {
-			x := model.Car{carAttributes[0], carAttributes[1], carAttributes[2], carAttributes[3], carAttributes[4], carAttributes[5]}
+			price := strings.TrimSpace(carAttributes[2])
+			price = strings.ReplaceAll(price, ".", "")
+			priceInt, err := strconv.ParseInt(price, 10, 64)
+			if err != nil {
+				log.Println("Nao foi possivel converter price para inteiro")
+			}
+
+			x := model.Car{carAttributes[0], carAttributes[1], priceInt, carAttributes[3], carAttributes[4], carAttributes[5], "Webmotors"}
 			payloadCar = append(payloadCar, x)
 		}
 
