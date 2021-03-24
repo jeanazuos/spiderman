@@ -50,12 +50,9 @@ func main() {
 
 	fmt.Println("ANTES=> ", carAttributes)
 
-	for index, value := range carAttributes {
+	// carAttributes = cleanAttributes(value, "Car Delivery", carAttributes, index)
+	carAttributes = cleanAttributes(carAttributes)
 
-		// carAttributes = cleanAttributes(value, "Car Delivery", carAttributes, index)
-		carAttributes = cleanAttributes(value, carAttributes, index)
-
-	}
 	fmt.Println("DEPOIS=> ", carAttributes)
 
 	os.Exit(1)
@@ -97,23 +94,33 @@ func main() {
 
 	// }
 }
-func cleanAttributes(attribute string, carAttributes []string, index int) []string {
+func cleanAttributes(carAttributes []string) []string {
 
 	//ATRIBUTOS PARA SEREM REMOVIDOS
-	attributeToRemove := []string{"Troca + Troco", "Car Delivery"}
-	for _, removeItem := range attributeToRemove {
-		fmt.Println("item=>", attribute, "itemtoremove=> ", removeItem)
+	// attributeToRemove := []string{"Troca + Troco", "Car Delivery"}
 
-		if bytes.Equal([]byte(attribute), []byte(removeItem)) {
-			fmt.Println(attribute)
-			carAttributes = append(carAttributes[:index], carAttributes[index+1:]...)
+	for index, attribute := range carAttributes {
+		if bytes.Equal([]byte(attribute), []byte("Car Delivery")) {
+			carAttributes = removeIndex(carAttributes, index)
+			fmt.Println("x1 ", carAttributes, "index", index)
+			break
 		}
 	}
-	// fmt.Println("carAttributes=> ", carAttributes)
 
-	// os.Exit(1)
-
-	// fmt.Println(attribute, []byte(attribute), "-----", attributeRemove, []byte(attributeRemove))
+	for index, attribute := range carAttributes {
+		if bytes.Equal([]byte(attribute), []byte("Troca + Troco")) {
+			carAttributes = removeIndex(carAttributes, index)
+			fmt.Println("x2 ", carAttributes, "index", index)
+			break
+		}
+	}
 
 	return carAttributes
+}
+
+func removeIndex(carAttributes []string, index int) []string {
+	fmt.Println("FUNCremoveIndex", "carAttributes=> ", carAttributes, "index=>", index)
+	ret := make([]string, 0)
+	ret = append(ret, carAttributes[:index]...)
+	return append(ret, carAttributes[index+1:]...)
 }
