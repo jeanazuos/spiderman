@@ -1,29 +1,42 @@
 package db
 
 import (
-	"database/sql"
+	"context"
 	"log"
 	"os"
 
-	"github.com/lib/pq"
+	"github.com/jackc/pgx/v4/pgxpool"
 )
 
-var db *sql.DB
+var db *pgxpool.Pool
 
-func ConnectDB() *sql.DB {
-	pgUrl, err := pq.ParseURL(os.Getenv("ELEPHANTSQL_URL"))
+func CreatePool() (*pgxpool.Pool, error) {
+
+	connectionString := "postgres://esaizziy:nIBPRvEuqVsdw6DQywfu_4L22nKuRVps@tuffi.db.elephantsql.com:5432/esaizziy"
+	poolConfig, err := pgxpool.ParseConfig(connectionString)
 	if err != nil {
-		log.Fatal(err)
+		return nil, err
 	}
 
-	db, err = sql.Open("postgres", pgUrl)
+	pool, err := pgxpool.ConnectConfig(context.Background(), poolConfig)
 	if err != nil {
-		log.Fatal(err)
+		return nil, err
 	}
+	return pool, nil
+}
 
-	err = db.Ping()
+func Init() {
+	pool, err := CreatePool()
 	if err != nil {
-		log.Fatal(err)
+		log.Fatal("Unable to create connection pool", "error", err)
+		os.Exit(1)
+	}
+	db = pool
+}
+
+func GetDb() *pgxpool.Pool {
+	if db == nil {
+		CreatePool()
 	}
 
 	return db
