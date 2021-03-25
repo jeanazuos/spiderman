@@ -9,8 +9,8 @@ import (
 	"strings"
 
 	"github.com/chromedp/chromedp"
-	"github.com/jeanazuos/buscakr_v2/spiderman/model"
-	util "github.com/jeanazuos/buscakr_v2/spiderman/utils"
+	model "github.com/jeanazuos/buscakr_v2/spiderman/internal/models"
+	util "github.com/jeanazuos/buscakr_v2/spiderman/internal/utils"
 )
 
 func main() {
